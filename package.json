@@ -1,0 +1,16 @@
+{
+  "name": "com.Whitebrim.CurrencySystem",
+  "version": "0.0.1",
+  "displayName": "CurrencySystem",
+  "description": "Encrypted Currency System for your ingame currencies.",
+  "licensesUrl": "https://github.com/Whitebrim/UnityCurrencySystem/blob/master/LICENSE",
+ "keywords": [
+    "currency",
+    "encrypted"
+  ],
+  "author": {
+    "name": "Whitebrim",
+    "email": "dev@brim.ml",
+    "url": "https://brim.ml"
+  }
+}
