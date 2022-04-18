@@ -1,6 +1,6 @@
 {
   "name": "com.whitebrim.currencies",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "displayName": "CurrencySystem",
   "description": "Encrypted Currency System for your ingame currencies.",
   "license": "MIT-0",
@@ -11,7 +11,7 @@
   "samples":{
     "displayName": "Basic sample",
     "description": "Basic sample",
-    "path": "Samples~/Basic Sample"
+    "path": "Samples/Basic Sample"
   },
   "author": {
     "name": "Whitebrim",
