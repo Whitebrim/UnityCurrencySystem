@@ -8,7 +8,7 @@
     "currency",
     "encrypted"
   ],
-  "samples":{
+  "samples": {
     "displayName": "Basic sample",
     "description": "Basic sample",
     "path": "Samples~/Basic Sample"
@@ -17,5 +17,7 @@
     "name": "Whitebrim",
     "email": "dev@brim.ml",
     "url": "https://brim.ml"
-  }
+  },
+  "type": "library",
+  "hideInEditor": false
 }
