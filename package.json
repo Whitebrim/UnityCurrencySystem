@@ -6,13 +6,17 @@
   "license": "MIT-0",
   "keywords": [
     "currency",
-    "encrypted"
+    "encrypted",
+	"coins",
+	"money"
   ],
-  "samples": {
-    "displayName": "Basic sample",
-    "description": "Basic sample",
-    "path": "Samples~/Basic Sample"
-  },
+  "samples": [
+	  {
+		"displayName": "Basic sample",
+		"description": "Basic sample",
+		"path": "Samples~/Basic Sample"
+	  }
+  ],
   "author": {
     "name": "Whitebrim",
     "email": "dev@brim.ml",
