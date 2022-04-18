@@ -11,7 +11,7 @@
   "samples":{
     "displayName": "Basic sample",
     "description": "Basic sample",
-    "path": "Samples/Basic Sample"
+    "path": "Samples~/Basic Sample"
   },
   "author": {
     "name": "Whitebrim",
