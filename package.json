@@ -1,6 +1,6 @@
 {
   "name": "com.whitebrim.currencies",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "displayName": "CurrencySystem",
   "description": "Encrypted Currency System for your ingame currencies.",
   "license": "MIT-0",
