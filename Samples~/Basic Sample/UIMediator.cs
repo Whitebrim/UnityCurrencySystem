@@ -12,15 +12,15 @@ public class UIMediator : MonoBehaviour
     {
         _wallet = wallet;
 
-        if (_wallet.GetAccount("RUB") is null)
+        if (_wallet.GetAccount("Coins") is null)
         {
             Debug.Log("Creating new currency");
-            _wallet.AddAccount(new CurrencyAccount("RUB", 1000));
+            _wallet.AddAccount(new CurrencyAccount("Coins", 1000));
             _wallet.Save();
         }
 
-        _wallet.GetAccount("RUB").OnCurrencyChange += UpdateUI;
-        UpdateUI(_wallet.GetAccount("RUB").Get());
+        _wallet.GetAccount("Coins").OnCurrencyChange += UpdateUI;
+        UpdateUI(_wallet.GetAccount("Coins").Get());
     }
 
     private void UpdateUI(double text)
@@ -30,23 +30,23 @@ public class UIMediator : MonoBehaviour
 
     public void Add9()
     {
-        _wallet.GetAccount("RUB").Add(9);
+        _wallet.GetAccount("Coins").Add(9);
     }
 
     public void Subtract4()
     {
-        _wallet.GetAccount("RUB").Subtract(4);
+        _wallet.GetAccount("Coins").Subtract(4);
     }
 
     public void Double()
     {
-        var account = _wallet.GetAccount("RUB");
+        var account = _wallet.GetAccount("Coins");
         account = account + account;
     }
 
     public void Clear()
     {
-        _wallet.GetAccount("RUB").Clear();
+        _wallet.GetAccount("Coins").Clear();
     }
 
     public void SwitchToPlayerPrefs()
@@ -74,5 +74,20 @@ public class UIMediator : MonoBehaviour
     {
         PlayerPrefs.DeleteKey(PlayerPrefsSaver.PLAYER_PREFS_WALLET_KEY);
         File.Delete(Path.Combine(Application.persistentDataPath, FileSaver.FILE_NAME));
+    }
+
+    public void Benchmark()
+    {
+        _wallet.GetAccount("Coins").OnCurrencyChange -= UpdateUI;
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        var account = _wallet.GetAccount("Coins");
+        for (int i = 0; i < 1000; i++)
+        {
+            account += 1;
+        }
+        sw.Stop();
+        Debug.Log($"Elapsed={sw.Elapsed}");
+        _wallet.GetAccount("Coins").OnCurrencyChange += UpdateUI;
+        UpdateUI(_wallet.GetAccount("Coins").Get());
     }
 }

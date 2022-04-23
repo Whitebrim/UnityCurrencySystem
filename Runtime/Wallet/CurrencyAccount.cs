@@ -4,19 +4,23 @@ using System.Security.Cryptography;
 namespace CurrencySystem
 {
     [Serializable]
-    public class CurrencyAccount : ICurrency
+    public sealed class CurrencyAccount : ICurrency
     {
         private readonly string _currencyCode;
         private float _multiplier = 1;
-        private double _amount;
+        private IVault _vault;
 
         [field: NonSerialized]
         public event ICurrency.CurrencyEvent OnCurrencyChange;
 
         private double Amount
         {
-            get { return _amount; }  // TODO decrypt
-            set { _amount = value; } // TODO encrypt
+            get { return _vault.Amount; }
+            set
+            {
+                _vault.Amount = value;
+                NotifyEvent();
+            }
         }
 
         public string CurrencyCode => _currencyCode;
@@ -27,8 +31,8 @@ namespace CurrencySystem
         public CurrencyAccount(string currencyCode, double amount, float multiplier = 1)
         {
             _currencyCode = currencyCode ?? throw new ArgumentNullException(nameof(currencyCode));
-            _amount = amount;
             _multiplier = multiplier;
+            _vault = new Vault(amount, currencyCode);
         }
 
         private void NotifyEvent()
@@ -40,13 +44,11 @@ namespace CurrencySystem
         public void Add(double amount)
         {
             Amount += amount * _multiplier;
-            NotifyEvent();
         }
 
         public void Clear()
         {
             Amount = 0;
-            NotifyEvent();
         }
 
         public double Get()
@@ -57,7 +59,6 @@ namespace CurrencySystem
         public void Subtract(double amount)
         {
             Amount -= amount;
-            NotifyEvent();
         }
 
         public bool TrySubtract(double amount)
@@ -65,49 +66,48 @@ namespace CurrencySystem
             if (Amount - amount >= 0)
             {
                 Amount -= amount;
-                NotifyEvent();
                 return true;
             }
             return false;
         }
 
-        public static CurrencyAccount operator +(CurrencyAccount vault, double income)
+        public static CurrencyAccount operator +(CurrencyAccount account, double income)
         {
-            vault.Add(income);
-            return vault;
+            account.Add(income);
+            return account;
         }
 
-        public static CurrencyAccount operator +(CurrencyAccount vault, CurrencyAccount vault2)
+        public static CurrencyAccount operator +(CurrencyAccount account, CurrencyAccount account2)
         {
-            vault.Add(vault2.Get());
-            return vault;
+            account.Add(account2.Get());
+            return account;
         }
 
-        public static CurrencyAccount operator ++(CurrencyAccount vault)
+        public static CurrencyAccount operator ++(CurrencyAccount account)
         {
-            vault.Add(1);
-            return vault;
+            account.Add(1);
+            return account;
         }
 
-        public static CurrencyAccount operator -(CurrencyAccount vault, double toll)
+        public static CurrencyAccount operator -(CurrencyAccount account, double toll)
         {
-            vault.Subtract(toll);
-            return vault;
+            account.Subtract(toll);
+            return account;
         }
 
-        public static CurrencyAccount operator -(CurrencyAccount vault, CurrencyAccount vault2)
+        public static CurrencyAccount operator -(CurrencyAccount account, CurrencyAccount account2)
         {
-            vault.Subtract(vault2.Get());
-            return vault;
+            account.Subtract(account2.Get());
+            return account;
         }
 
-        public static CurrencyAccount operator --(CurrencyAccount vault)
+        public static CurrencyAccount operator --(CurrencyAccount account)
         {
-            vault.Subtract(1);
-            return vault;
+            account.Subtract(1);
+            return account;
         }
 
-        public static implicit operator double(CurrencyAccount vault) => vault.Amount;
+        public static implicit operator double(CurrencyAccount account) => account.Amount;
 
         public override bool Equals(object obj)
         {
