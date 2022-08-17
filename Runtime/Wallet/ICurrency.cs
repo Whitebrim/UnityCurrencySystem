@@ -2,8 +2,9 @@ namespace CurrencySystem
 {
     public interface ICurrency
     {
-        delegate void CurrencyEvent(double newAmount);
-        event CurrencyEvent OnCurrencyChange;
+        delegate void CurrencyEvent(double amount);
+        event CurrencyEvent OnNewAmount;
+        event CurrencyEvent OnChange;
         public string CurrencyCode { get; }
         public double Get();
         public void Add(double amount);

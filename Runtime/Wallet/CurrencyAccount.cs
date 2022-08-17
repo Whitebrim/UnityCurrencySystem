@@ -1,5 +1,4 @@
 using System;
-using System.Security.Cryptography;
 
 namespace CurrencySystem
 {
@@ -10,16 +9,26 @@ namespace CurrencySystem
         private float _multiplier = 1;
         private IVault _vault;
 
+        /// <summary>
+        /// Передает общее кол-во денег на счету
+        /// </summary>
         [field: NonSerialized]
-        public event ICurrency.CurrencyEvent OnCurrencyChange;
+
+        public event ICurrency.CurrencyEvent OnNewAmount;
+        /// <summary>
+        /// Передает сумму, на которую счет изменился
+        /// </summary>
+        [field: NonSerialized]
+        public event ICurrency.CurrencyEvent OnChange;
 
         private double Amount
         {
             get { return _vault.Amount; }
             set
             {
+                OnChange?.Invoke(value - _vault.Amount);
                 _vault.Amount = value;
-                NotifyEvent();
+                OnNewAmount?.Invoke(value);
             }
         }
 
@@ -33,12 +42,6 @@ namespace CurrencySystem
             _currencyCode = currencyCode ?? throw new ArgumentNullException(nameof(currencyCode));
             _multiplier = multiplier;
             _vault = new Vault(amount, currencyCode);
-        }
-
-        private void NotifyEvent()
-        {
-            Aes.Create();
-            OnCurrencyChange?.Invoke(Amount);
         }
 
         public void Add(double amount)
